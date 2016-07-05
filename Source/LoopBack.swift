@@ -35,7 +35,7 @@ public protocol LoopBackClient{
 
 public extension LoopBackClient{
     
-    var accessToken: ModelId? {
+    public var accessToken: ModelId? {
         get {
             let defaults = NSUserDefaults.standardUserDefaults()
             return defaults.objectForKey(LoopBackConstants.currentAccessTokenKey)
@@ -47,7 +47,7 @@ public extension LoopBackClient{
     }
     
     
-    func request(method : Method, url : String, parameters: [String : AnyObject]? = nil, encoding:ParameterEncoding? = .URL, headers: [String : String]? = nil) -> Request{
+    public func request(method : Method, url : String, parameters: [String : AnyObject]? = nil, encoding:ParameterEncoding? = .URL, headers: [String : String]? = nil) -> Request{
         
         var clientHeaders : [String : String] = ["Authorization" : (self.accessToken != nil) ? self.accessToken! as! String : ""]
         headers?.forEach({ (key, value) -> Void in clientHeaders[key] = value })
@@ -56,7 +56,7 @@ public extension LoopBackClient{
     }
     
     
-    func repository<Model where  Model:PersistedModel,  Model:Mappable> (path: String) -> Repository<Model>{
+    public func repository<Model where  Model:PersistedModel,  Model:Mappable> (path: String) -> Repository<Model>{
         let repository = Repository<Model>(client: self,path: path)
         return repository
     }
@@ -67,17 +67,17 @@ public extension LoopBackClient{
 
 
 public struct LoopBackError : Mappable, ErrorType{
-    var name:String? = nil
-    var status:Int? = 200 {
+    public var name:String? = nil
+    public var status:Int? = 200 {
         didSet{
             self.httpStatusCode = HTTPStatusCode(rawValue: status!)
         }
     }
     
-    var message:String? = nil
+    public var message:String? = nil
     
-    var error: NSError? = nil
-    var httpStatusCode: HTTPStatusCode? = nil
+    public var error: NSError? = nil
+    public var httpStatusCode: HTTPStatusCode? = nil
     
     
     
@@ -102,11 +102,11 @@ public struct LoopBackError : Mappable, ErrorType{
 }
 
 public struct Filter : Mappable{
-    var Where: [String: AnyObject]?
-    var Limit: Int?
-    var Include : [String]?
-    var Order : [String]?
-    var Skip : Int?
+    public var Where: [String: AnyObject]?
+    public var Limit: Int?
+    public var Include : [String]?
+    public var Order : [String]?
+    public var Skip : Int?
     
     public init?(_ map: Map) {
         

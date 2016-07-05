@@ -49,7 +49,7 @@ extension Repository where Model : UserModel{
     }
     
     public func logout() -> Future<Bool,LoopBackError>{
-        let promise = Promise<Bool, LoopBackError>()
+        //let promise = Promise<Bool, LoopBackError>()
         let accessTokenRepository : AccessTokenRepository = AccessTokenRepository<Model>(client: self.client)
         return accessTokenRepository.logout(self.client.accessToken)
 

@@ -49,7 +49,7 @@ public class AccessTokenRepository <UserType where UserType: UserModel, UserType
     static var currentUser: UserType?{
         get{
             let defaults = NSUserDefaults.standardUserDefaults()
-            var userDict: NSDictionary? = defaults.objectForKey(LoopBackConstants.currentUserKey) as? NSDictionary
+            let userDict: NSDictionary? = defaults.objectForKey(LoopBackConstants.currentUserKey) as? NSDictionary
             return Mapper<UserType>().map(userDict)
         }
         
@@ -61,9 +61,9 @@ public class AccessTokenRepository <UserType where UserType: UserModel, UserType
     
     
     public func login(email: String, password: String, include: [String]? = ["user"]) -> Future<AccessToken<UserType>, LoopBackError> {
-        var promise = Promise<AccessToken<UserType>, LoopBackError>()
+        let promise = Promise<AccessToken<UserType>, LoopBackError>()
         
-        var params:[String: AnyObject] = ["email" : email, "password": password, "include": include!]
+        let params:[String: AnyObject] = ["email" : email, "password": password, "include": include!]
         let request: Request = self.prepareRequest(.POST, absolutePath: UserType.modelName() + "/login?include=user", parameters: params)
         
         self.processObjectRequest(request, key: "login").onSuccess { (accessToken : AccessToken<UserType>) in

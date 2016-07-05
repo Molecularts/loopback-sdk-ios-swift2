@@ -23,8 +23,8 @@ public protocol PersistedModel{
 
 
 public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
-    var client : LoopBackClient
-    var path: String
+    public var client : LoopBackClient
+    public var path: String
     
     public init(client: LoopBackClient, path: String? = nil){
         self.client = client
@@ -56,7 +56,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
     }
     
     public func findOne(filter : Filter?) -> Future<Model, LoopBackError> {
-        var parameters :[String: AnyObject]?  = filter?.toRequestParametters()
+        let parameters :[String: AnyObject]?  = filter?.toRequestParametters()
         
         let request: Request = prepareRequest(.GET, pathComponents: ["findOne"], parameters: parameters, encoding:.URL)
         return self.processObjectRequest(request)
@@ -64,7 +64,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
     }
     
     public func find(filter : Filter?) -> Future<[Model], LoopBackError> {
-        var parameters :[String: AnyObject]?  = filter?.toRequestParametters()
+        let parameters :[String: AnyObject]?  = filter?.toRequestParametters()
         
         let request: Request = prepareRequest(.GET, parameters: parameters, encoding:.URL)
         return self.processArrayRequest(request)
@@ -87,7 +87,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
             return self.processObjectRequest(request)
         }else{
             let promise = Promise<Model,LoopBackError>()
-            var error: LoopBackError = LoopBackError(httpCode: .UnprocessableEntity, message: "A valid model id is required for update, use upsert or save instead.")
+            let error: LoopBackError = LoopBackError(httpCode: .UnprocessableEntity, message: "A valid model id is required for update, use upsert or save instead.")
             promise.failure(error)
             return promise.future
         }
