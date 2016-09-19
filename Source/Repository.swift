@@ -32,21 +32,21 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
     }
     
     public func resourcePath(pathComponents:[String]?) -> String{
-        var baseUrl : NSURL =   self.client.baseURL.URLByAppendingPathComponent(self.path)!
+        var baseUrl : NSURL =   self.client.baseURL.URLByAppendingPathComponent(self.path)
         if (pathComponents != nil){
             for component in pathComponents! {
-                baseUrl = baseUrl.URLByAppendingPathComponent(component)!
+                baseUrl = baseUrl.URLByAppendingPathComponent(component)
 
             }
         }
         
-        return baseUrl.absoluteString!
+        return baseUrl.absoluteString
     }
     
     public func absolutePath(relativePath:String) -> String{
-        let baseUrl : NSURL =   self.client.baseURL.URLByAppendingPathComponent(relativePath)!
+        let baseUrl : NSURL =   self.client.baseURL.URLByAppendingPathComponent(relativePath)
         
-        return baseUrl.absoluteString!
+        return baseUrl.absoluteString
     }
     
     public func findById(id : AnyObject) -> Future<Model, LoopBackError>{

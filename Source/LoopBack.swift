@@ -100,11 +100,11 @@ public struct LoopBackError : Mappable, ErrorType{
 }
 
 public struct Filter : Mappable{
-    var Where: [String: AnyObject]?
-    var Limit: Int?
-    var Include : [String]?
-    var Order : [String]?
-    var Skip : Int?
+    internal var Where: [String: AnyObject]?
+    internal var Limit: Int?
+    internal var Include : [String]?
+    internal var Order : [String]?
+    internal var Skip : Int?
     
     public init?(_ map: Map) {
         
