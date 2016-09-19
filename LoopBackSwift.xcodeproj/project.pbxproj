@@ -16,11 +16,12 @@
 		2171E8BB1D1AA31000B587A9 /* LoopBackSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2171E8BA1D1AA31000B587A9 /* LoopBackSwiftTests.swift */; };
 		2171E8C61D1AA38400B587A9 /* LoopBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2171E8C51D1AA38400B587A9 /* LoopBack.swift */; };
 		2171E8CA1D1AF00E00B587A9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171E8C91D1AF00E00B587A9 /* Alamofire.framework */; };
-		2171E8CD1D1B78B200B587A9 /* AlamofireObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171E8CB1D1B78B200B587A9 /* AlamofireObjectMapper.framework */; };
 		2171E8CE1D1B78B200B587A9 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171E8CC1D1B78B200B587A9 /* ObjectMapper.framework */; };
 		2171E9341D1D248D00B587A9 /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171E9321D1D248D00B587A9 /* BrightFutures.framework */; };
 		2171E9351D1D248D00B587A9 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171E9331D1D248D00B587A9 /* Result.framework */; };
-		219410E91D242325000ECD21 /* HTTPStatusCodes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 219410E81D242325000ECD21 /* HTTPStatusCodes.framework */; };
+		21A2C6B41D903B1200117361 /* AlamofireObjectMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A2C6B31D903B1200117361 /* AlamofireObjectMapper.swift */; };
+		21A2C6C01D903DE200117361 /* HTTPStatusCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A2C6BE1D903DE200117361 /* HTTPStatusCodes.swift */; };
+		21A2C6C11D903DE200117361 /* HTTPStatusCodes+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A2C6BF1D903DE200117361 /* HTTPStatusCodes+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,11 +47,12 @@
 		2171E8BC1D1AA31000B587A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2171E8C51D1AA38400B587A9 /* LoopBack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopBack.swift; sourceTree = "<group>"; };
 		2171E8C91D1AF00E00B587A9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
-		2171E8CB1D1B78B200B587A9 /* AlamofireObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlamofireObjectMapper.framework; path = Carthage/Build/iOS/AlamofireObjectMapper.framework; sourceTree = "<group>"; };
 		2171E8CC1D1B78B200B587A9 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
 		2171E9321D1D248D00B587A9 /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrightFutures.framework; path = Carthage/Build/iOS/BrightFutures.framework; sourceTree = "<group>"; };
 		2171E9331D1D248D00B587A9 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
-		219410E81D242325000ECD21 /* HTTPStatusCodes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HTTPStatusCodes.framework; path = Carthage/Build/iOS/HTTPStatusCodes.framework; sourceTree = "<group>"; };
+		21A2C6B31D903B1200117361 /* AlamofireObjectMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireObjectMapper.swift; sourceTree = "<group>"; };
+		21A2C6BE1D903DE200117361 /* HTTPStatusCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPStatusCodes.swift; sourceTree = "<group>"; };
+		21A2C6BF1D903DE200117361 /* HTTPStatusCodes+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HTTPStatusCodes+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,8 +64,6 @@
 				2171E9341D1D248D00B587A9 /* BrightFutures.framework in Frameworks */,
 				2171E9351D1D248D00B587A9 /* Result.framework in Frameworks */,
 				2171E8CA1D1AF00E00B587A9 /* Alamofire.framework in Frameworks */,
-				2171E8CD1D1B78B200B587A9 /* AlamofireObjectMapper.framework in Frameworks */,
-				219410E91D242325000ECD21 /* HTTPStatusCodes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +101,7 @@
 		2171E8AD1D1AA31000B587A9 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				21A2C6B51D903D3300117361 /* Helpers */,
 				2171E8C51D1AA38400B587A9 /* LoopBack.swift */,
 				211E567B1D2164880029E487 /* Repository.swift */,
 				211E567F1D21655B0029E487 /* User.swift */,
@@ -131,14 +132,22 @@
 		2171E8C81D1AEFDC00B587A9 /* Supporting Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				219410E81D242325000ECD21 /* HTTPStatusCodes.framework */,
 				2171E9321D1D248D00B587A9 /* BrightFutures.framework */,
 				2171E9331D1D248D00B587A9 /* Result.framework */,
-				2171E8CB1D1B78B200B587A9 /* AlamofireObjectMapper.framework */,
 				2171E8CC1D1B78B200B587A9 /* ObjectMapper.framework */,
 				2171E8C91D1AF00E00B587A9 /* Alamofire.framework */,
 			);
 			name = "Supporting Frameworks";
+			sourceTree = "<group>";
+		};
+		21A2C6B51D903D3300117361 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				21A2C6BE1D903DE200117361 /* HTTPStatusCodes.swift */,
+				21A2C6BF1D903DE200117361 /* HTTPStatusCodes+Extensions.swift */,
+				21A2C6B31D903B1200117361 /* AlamofireObjectMapper.swift */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,14 +207,16 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Molecularts;
 				TargetAttributes = {
 					2171E8AA1D1AA31000B587A9 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					2171E8B41D1AA31000B587A9 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -249,8 +260,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21A2C6C11D903DE200117361 /* HTTPStatusCodes+Extensions.swift in Sources */,
+				21A2C6C01D903DE200117361 /* HTTPStatusCodes.swift in Sources */,
 				2171E8C61D1AA38400B587A9 /* LoopBack.swift in Sources */,
 				211E567C1D2164880029E487 /* Repository.swift in Sources */,
+				21A2C6B41D903B1200117361 /* AlamofireObjectMapper.swift in Sources */,
 				211E56801D21655B0029E487 /* User.swift in Sources */,
 				211E56841D227CF40029E487 /* Types.swift in Sources */,
 				211E56821D216B6E0029E487 /* AccessToken.swift in Sources */,
@@ -290,8 +304,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -339,8 +355,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -360,6 +378,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -371,6 +390,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -387,6 +407,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -394,6 +415,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -409,6 +431,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.molecularts.loopback-swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -419,6 +442,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.molecularts.LoopBackSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -429,6 +453,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.molecularts.LoopBackSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};

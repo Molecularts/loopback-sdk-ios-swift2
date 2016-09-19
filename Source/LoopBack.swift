@@ -7,11 +7,8 @@
 
 import Foundation
 import Alamofire
-import AlamofireObjectMapper
 import ObjectMapper
 import BrightFutures
-import HTTPStatusCodes
-
 
 public typealias Method = Alamofire.Method;
 public typealias ParameterEncoding = Alamofire.ParameterEncoding;
