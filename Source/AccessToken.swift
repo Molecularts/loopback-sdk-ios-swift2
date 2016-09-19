@@ -10,18 +10,12 @@ import Foundation
 import ObjectMapper
 import BrightFutures
 
-public protocol AccessTokenModel : PersistedModel{
-    var userId: ModelId? { get  set }
-    var ttl: Int? { get  set }
-    
-}
 
-
-public class AccessToken: AccessTokenModel, ModelMappable{
+public class AccessToken: PersistedModel, ModelMappable{
     public var id: ModelId?
-    public var userId: ModelId?
-    public var ttl: Int?
-    public var created: String?
+    var userId: ModelId?
+    var ttl: Int?
+    var created: String?
     
     
     public static func modelName () -> String{
@@ -52,16 +46,4 @@ public class AccessToken: AccessTokenModel, ModelMappable{
             defaults.setObject(newValue?.toJSON(), forKey: LoopBackConstants.currentAccessTokenObjectKey)
         }
     }
-}
-
-
-public class AccessTokenRepository <UserType where UserType: UserModel, UserType: Mappable> : Repository <AccessToken>{
-    public override init(client: LoopBackClient, path: String? = nil){
-        super.init(client: client, path: path)
-        
-    }
-    
-    
-    
-    
 }
