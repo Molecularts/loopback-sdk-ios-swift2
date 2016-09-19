@@ -23,6 +23,7 @@ public typealias Request = Alamofire.Request
 struct LoopBackConstants {
     static let currentUserKey = "LoopBackCurrentUser"
     static let currentAccessTokenKey = "LoopBackCurrentAccessToken"
+    static let currentAccessTokenObjectKey = "currentAccessTokenObjectKey"
     
 }
 
@@ -35,7 +36,7 @@ public protocol LoopBackClient{
 
 public extension LoopBackClient{
     
-    public var accessToken: ModelId? {
+    var accessToken: ModelId? {
         get {
             let defaults = NSUserDefaults.standardUserDefaults()
             return defaults.objectForKey(LoopBackConstants.currentAccessTokenKey)
@@ -47,7 +48,7 @@ public extension LoopBackClient{
     }
     
     
-    public func request(method : Method, url : String, parameters: [String : AnyObject]? = nil, encoding:ParameterEncoding? = .URL, headers: [String : String]? = nil) -> Request{
+    func request(method : Method, url : String, parameters: [String : AnyObject]? = nil, encoding:ParameterEncoding? = .URL, headers: [String : String]? = nil) -> Request{
         
         var clientHeaders : [String : String] = ["Authorization" : (self.accessToken != nil) ? self.accessToken! as! String : ""]
         headers?.forEach({ (key, value) -> Void in clientHeaders[key] = value })
@@ -56,28 +57,28 @@ public extension LoopBackClient{
     }
     
     
-    public func repository<Model where  Model:PersistedModel,  Model:Mappable> (path: String) -> Repository<Model>{
+    func repository<Model where  Model:PersistedModel,  Model:Mappable> (path: String) -> Repository<Model>{
         let repository = Repository<Model>(client: self,path: path)
         return repository
     }
     
-
+    
 }
 
 
 
 public struct LoopBackError : Mappable, ErrorType{
-    public var name:String? = nil
-    public var status:Int? = 200 {
+    var name:String? = nil
+    var status:Int? = 200 {
         didSet{
             self.httpStatusCode = HTTPStatusCode(rawValue: status!)
         }
     }
     
-    public var message:String? = nil
+    var message:String? = nil
     
-    public var error: NSError? = nil
-    public var httpStatusCode: HTTPStatusCode? = nil
+    var error: NSError? = nil
+    var httpStatusCode: HTTPStatusCode? = nil
     
     
     
@@ -102,11 +103,11 @@ public struct LoopBackError : Mappable, ErrorType{
 }
 
 public struct Filter : Mappable{
-    public var Where: [String: AnyObject]?
-    public var Limit: Int?
-    public var Include : [String]?
-    public var Order : [String]?
-    public var Skip : Int?
+    var Where: [String: AnyObject]?
+    var Limit: Int?
+    var Include : [String]?
+    var Order : [String]?
+    var Skip : Int?
     
     public init?(_ map: Map) {
         

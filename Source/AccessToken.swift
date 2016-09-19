@@ -13,25 +13,16 @@ import BrightFutures
 public protocol AccessTokenModel : PersistedModel{
     var userId: ModelId? { get  set }
     var ttl: Int? { get  set }
-
+    
 }
 
 
-
-public class AccessToken <UserType where UserType:UserModel, UserType:Mappable>: AccessTokenModel, ModelMappable{
-    private var _id:ModelId? = nil
-    public var id: ModelId?{
-        get{
-            return _id
-        }
-        set{
-            _id = newValue
-        }
-    }
-    
+public class AccessToken: AccessTokenModel, ModelMappable{
+    public var id: ModelId?
     public var userId: ModelId?
     public var ttl: Int?
-    public var user: UserType?
+    public var created: String?
+    
     
     public static func modelName () -> String{
         return "AccessToken"
@@ -43,73 +34,34 @@ public class AccessToken <UserType where UserType:UserModel, UserType:Mappable>:
     
     public func mapping(map: Map) {
         id                  <- map["id"]
-        userId              <- map["token"]
-        user              <- map["user"]
+        userId              <- map["userId"]
+        ttl                 <- map["ttl"]
+        created             <- map["created"]
         
+    }
+    
+    static var current: AccessToken?{
+        get{
+            let defaults = NSUserDefaults.standardUserDefaults()
+            let userDict: NSDictionary? = defaults.objectForKey(LoopBackConstants.currentAccessTokenObjectKey) as? NSDictionary
+            return Mapper<AccessToken>().map(userDict)
+        }
+        
+        set{
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setObject(newValue?.toJSON(), forKey: LoopBackConstants.currentAccessTokenObjectKey)
+        }
     }
 }
 
 
-
-public class AccessTokenRepository <UserType where UserType: UserModel, UserType: Mappable> : Repository <AccessToken<UserType>>{
+public class AccessTokenRepository <UserType where UserType: UserModel, UserType: Mappable> : Repository <AccessToken>{
     public override init(client: LoopBackClient, path: String? = nil){
         super.init(client: client, path: path)
-
-    }
-
-    static var currentUser: UserType?{
-        get{
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let userDict: NSDictionary? = defaults.objectForKey(LoopBackConstants.currentUserKey) as? NSDictionary
-            return Mapper<UserType>().map(userDict)
-        }
-        
-        set(newUser){
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(newUser?.toJSON(), forKey: LoopBackConstants.currentUserKey)
-        }
-    }
-    
-    
-    public func login(email: String, password: String, include: [String]? = ["user"]) -> Future<AccessToken<UserType>, LoopBackError> {
-        let promise = Promise<AccessToken<UserType>, LoopBackError>()
-        
-        let params:[String: AnyObject] = ["email" : email, "password": password, "include": include!]
-        let request: Request = self.prepareRequest(.POST, absolutePath: UserType.modelName() + "/login?include=user", parameters: params)
-        
-        self.processObjectRequest(request, key: "login").onSuccess { (accessToken : AccessToken<UserType>) in
-            self.client.accessToken = accessToken.id
-            AccessTokenRepository<UserType>.currentUser = accessToken.user
-            promise.success(accessToken)
-        }.onFailure { (error: LoopBackError) in
-            promise.failure(error)
-        }
-        
-        return promise.future
         
     }
     
     
-    public func logout(accessToken: ModelId?) -> Future<Bool, LoopBackError> {
-        
-        let promise = Promise<Bool, LoopBackError>()
-        
-        if(accessToken != nil){
-            let request: Request = prepareRequest(.POST, absolutePath: UserType.modelName() + "/logout", parameters: ["access_token": self.client.accessToken!])
-            processAnyRequest(request).onSuccess { (anyObject: AnyObject) in
-                    self.client.accessToken = nil
-                    AccessTokenRepository<UserType>.currentUser = nil
-                    promise.success(true)
-                }.onFailure { (error : LoopBackError) in
-                    promise.failure(error)
-            }
-        }else{
-            let error = LoopBackError(httpCode: .UnprocessableEntity, message: "You dont have a valid AccessToken, please login first")
-            promise.failure(error)
-        }
-        
-        
-        return promise.future
-        
-    }
+    
+    
 }
