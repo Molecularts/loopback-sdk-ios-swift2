@@ -17,16 +17,26 @@ public protocol AccessTokenModel : PersistedModel{
 }
 
 
+
 public class AccessToken <UserType where UserType:UserModel, UserType:Mappable>: AccessTokenModel, ModelMappable{
-    public var id: ModelId? = nil
-    public var userId: ModelId? = nil
-    public var ttl: Int? = nil
-    public var user: UserType? = nil
+    private var _id:ModelId? = nil
+    public var id: ModelId?{
+        get{
+            return _id
+        }
+        set{
+            _id = newValue
+        }
+    }
+    
+    public var userId: ModelId?
+    public var ttl: Int?
+    public var user: UserType?
     
     public static func modelName () -> String{
         return "AccessToken"
     }
-
+    
     public required init?(_ map: Map) {
         
     }
@@ -38,6 +48,7 @@ public class AccessToken <UserType where UserType:UserModel, UserType:Mappable>:
         
     }
 }
+
 
 
 public class AccessTokenRepository <UserType where UserType: UserModel, UserType: Mappable> : Repository <AccessToken<UserType>>{
