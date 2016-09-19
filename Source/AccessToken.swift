@@ -10,23 +10,29 @@ import Foundation
 import ObjectMapper
 import BrightFutures
 
+public protocol AccessTokenModel : PersistedModel{
+    var userId: ModelId? { get  set }
+    var ttl: Int? { get  set }
+    
+}
 
-public class AccessToken: PersistedModel, ModelMappable{
-    public var id: ModelId?
+
+struct AccessToken: PersistedModel, ModelMappable{
+    var id: ModelId?
     var userId: ModelId?
     var ttl: Int?
     var created: String?
     
     
-    public static func modelName () -> String{
+    internal static func modelName () -> String{
         return "AccessToken"
     }
     
-    public required init?(_ map: Map) {
+    internal init?(_ map: Map) {
         
     }
     
-    public func mapping(map: Map) {
+    internal mutating func mapping(map: Map) {
         id                  <- map["id"]
         userId              <- map["userId"]
         ttl                 <- map["ttl"]
@@ -47,3 +53,4 @@ public class AccessToken: PersistedModel, ModelMappable{
         }
     }
 }
+
