@@ -87,7 +87,7 @@ extension Repository where Model : UserModel{
         
     }
     
-    var currentUser: Model?{
+    public var currentUser: Model?{
         get{
             return Repository<Model>.currentUser
         }
@@ -97,7 +97,7 @@ extension Repository where Model : UserModel{
         }
     }
     
-    static var currentUser: Model?{
+    public static var currentUser: Model?{
         get{
             let defaults = NSUserDefaults.standardUserDefaults()
             let userDict: NSDictionary? = defaults.objectForKey(LoopBackConstants.currentUserKey) as? NSDictionary
