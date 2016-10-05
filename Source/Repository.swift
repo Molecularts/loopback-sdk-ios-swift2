@@ -49,12 +49,12 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
         return baseUrl.absoluteString
     }
     
-    public func findById(id : AnyObject) -> Future<Model, LoopBackError>{
+    public func findById(id : AnyObject) -> Future<Model?, LoopBackError>{
         let request: Request = prepareRequest(.GET  , pathComponents: [id as! String])
         return self.processObjectRequest(request)
     }
     
-    public func findOne(filter : Filter?) -> Future<Model, LoopBackError> {
+    public func findOne(filter : Filter?) -> Future<Model?, LoopBackError> {
         let parameters :[String: AnyObject]?  = filter?.toRequestParametters()
         
         let request: Request = prepareRequest(.GET, pathComponents: ["findOne"], parameters: parameters, encoding:.URL)
@@ -62,7 +62,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
         
     }
     
-    public func find(filter : Filter?) -> Future<[Model], LoopBackError> {
+    public func find(filter : Filter?) -> Future<[Model]?, LoopBackError> {
         let parameters :[String: AnyObject]?  = filter?.toRequestParametters()
         
         let request: Request = prepareRequest(.GET, parameters: parameters, encoding:.URL)
@@ -70,22 +70,22 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
         
     }
     
-    public func save(model: Model) -> Future<Model,LoopBackError>{
+    public func save(model: Model) -> Future<Model?,LoopBackError>{
         let request: Request = prepareRequest(.POST, parameters:model.toJSON(), encoding: .JSON)
         return self.processObjectRequest(request)
     }
     
-    public func upsert(model: Model) -> Future<Model,LoopBackError>{
+    public func upsert(model: Model) -> Future<Model?,LoopBackError>{
         let request: Request = prepareRequest(.PUT, parameters:model.toJSON(), encoding: .JSON)
         return self.processObjectRequest(request)
     }
     
-    public func update(model: Model) -> Future<Model,LoopBackError>{
+    public func update(model: Model) -> Future<Model?,LoopBackError>{
         if(model.id != nil){
             let request: Request = prepareRequest(.PUT, parameters:model.toJSON(), encoding: .JSON, pathComponents: [model.id as! String])
             return self.processObjectRequest(request)
         }else{
-            let promise = Promise<Model,LoopBackError>()
+            let promise = Promise<Model?,LoopBackError>()
             let error: LoopBackError = LoopBackError(httpCode: .UnprocessableEntity, message: "A valid model id is required for update, use upsert or save instead.")
             promise.failure(error)
             return promise.future
@@ -98,7 +98,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
 
         let promise = Promise<Bool, LoopBackError>()
         
-        processAnyRequest(request).onSuccess { (anyObject: AnyObject) in
+        processAnyRequest(request).onSuccess { (anyObject: AnyObject?) in
             if(anyObject is NSDictionary){
                 let jsonData = anyObject as! NSDictionary
                 let count : Int = jsonData["count"] as! Int
@@ -116,7 +116,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
     }
     
     
-    public func updateAttributes(id: ModelId, attributes: [String: AnyObject]) -> Future<Model,LoopBackError>{
+    public func updateAttributes(id: ModelId, attributes: [String: AnyObject]) -> Future<Model?,LoopBackError>{
         let request: Request = prepareRequest(.PUT, parameters:attributes, encoding: .JSON, pathComponents: [id as! String])
         return self.processObjectRequest(request)
     }
@@ -125,7 +125,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
         let promise = Promise<Bool, LoopBackError>()
         let request: Request = prepareRequest(.GET, pathComponents: [id as! String, "exists"])
         
-        processAnyRequest(request).onSuccess { (anyObject: AnyObject) in
+        processAnyRequest(request).onSuccess { (anyObject: AnyObject?) in
             if(anyObject is NSDictionary){
                 let jsonData = anyObject as! NSDictionary
                 let modelExist : Bool = jsonData["exists"] as! Bool
@@ -142,7 +142,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
         return promise.future
     }
     
-    public func willProcessObjectRequest(request: Request, promise : Promise<Model, LoopBackError>, key:String? = nil){
+    public func willProcessObjectRequest(request: Request, promise : Promise<Model?, LoopBackError>, key:String? = nil){
         
     }
     
@@ -150,31 +150,38 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
         
     }
     
-    internal func processAnyRequest(request:Request, key: String? = nil) -> Future<AnyObject, LoopBackError>{
-        let promise = Promise<AnyObject, LoopBackError>()
+    internal func processAnyRequest(request:Request, key: String? = nil) -> Future<AnyObject?, LoopBackError>{
+        let promise = Promise<AnyObject?, LoopBackError>()
 
         request.responseJSON { (response : Response<AnyObject, NSError>) in
             guard (response.result.isSuccess)
                 else{
-                    let jsonString = NSString(data: response.data!, encoding: NSASCIIStringEncoding)
-                    var error: LoopBackError? = Mapper<LoopBackError>().map(jsonString!)
-                    error?.error = response.result.error
-                    promise.failure(error!)
-                    return
+                    if response.data != nil {
+                        let jsonString = NSString(data: response.data!, encoding: NSASCIIStringEncoding)
+                        var error: LoopBackError? = Mapper<LoopBackError>().map(jsonString!)
+                        error?.error = response.result.error
+                        promise.failure(error!)
+                        return
+                    }else{
+                        let error: LoopBackError = LoopBackError(httpCode: HTTPStatusCode.BadRequest, message: "Unknow error")
+                        promise.failure(error)
+                        return
+                    }
+
                     
             }
             
             let data = response.result.value
             
-            promise.success(data!)
+            promise.success(data)
         }
         
         return promise.future
 
     }
     
-    internal func processObjectRequest(request: Request, key: String? = nil) -> Future<Model, LoopBackError>{
-        let promise = Promise<Model, LoopBackError>()
+    internal func processObjectRequest(request: Request, key: String? = nil) -> Future<Model?, LoopBackError>{
+        let promise = Promise<Model?, LoopBackError>()
         self.willProcessObjectRequest(request, promise: promise, key: key)
         
         request.responseObject {  (response : Response<Model, NSError>) in
@@ -211,7 +218,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
 
             let model = response.result.value
             
-            promise.success(model!)
+            promise.success(model)
             
             
         }
@@ -220,8 +227,8 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
         
     }
     
-    internal func processArrayRequest(request: Request) -> Future<[Model], LoopBackError>{
-        let promise = Promise<[Model], LoopBackError>()
+    internal func processArrayRequest(request: Request) -> Future<[Model]?, LoopBackError>{
+        let promise = Promise<[Model]?, LoopBackError>()
         request.responseArray {  (response : Response<[Model], NSError>) in
             guard (response.result.isSuccess)
                 else{
@@ -233,7 +240,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
                     
             }
             let models = response.result.value
-            promise.success(models!)
+            promise.success(models)
             
         }
         

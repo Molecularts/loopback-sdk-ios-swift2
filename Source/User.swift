@@ -23,8 +23,8 @@ public protocol UserModel: PersistedModel{
 }
 
 extension Repository where Model : UserModel{
-    public func login(email: String, password: String) -> Future<Model, LoopBackError> {
-        let promise : Promise = Promise<Model, LoopBackError>()
+    public func login(email: String, password: String) -> Future<Model?, LoopBackError> {
+        let promise : Promise = Promise<Model?, LoopBackError>()
         
         let params:[String: AnyObject] = ["email" : email, "password": password]
         let request: Request = self.prepareRequest(.POST, absolutePath: Model.modelName() + "/login", parameters: params)
@@ -50,7 +50,7 @@ extension Repository where Model : UserModel{
             
             AccessToken.current = model
             
-            self.findById((model?.userId)!).onSuccess(callback: { (user: Model) in
+            self.findById((model?.userId)!).onSuccess(callback: { (user: Model?) in
                 self.currentUser = user
                 promise.success(user)
             }).onFailure(callback: { (error: LoopBackError) in
@@ -68,13 +68,16 @@ extension Repository where Model : UserModel{
         
         if(self.client.accessToken  != nil){
             let request: Request = prepareRequest(.POST, absolutePath: Model.modelName() + "/logout", parameters: ["access_token": self.client.accessToken!])
-            processAnyRequest(request).onSuccess { (anyObject: AnyObject) in
+            processAnyRequest(request).onSuccess { (anyObject: AnyObject?) in
                 self.client.accessToken = nil
                 AccessToken.current = nil
                 self.currentUser = nil
-                
-                promise.success(true)
-                }.onFailure { (error : LoopBackError) in
+                if anyObject != nil {
+                    promise.success(true)
+                }else {
+                    promise.success(false)
+                }
+            }.onFailure { (error : LoopBackError) in
                     promise.failure(error)
             }
         }else{

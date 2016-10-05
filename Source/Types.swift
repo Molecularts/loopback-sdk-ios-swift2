@@ -11,8 +11,8 @@ import ObjectMapper
 
 
 public struct GeoPoint : ModelMappable{
-    public var lat: Float = 0
-    public var lng: Float = 0
+    public var lat: Double = 0
+    public var lng: Double = 0
     
     public init?(_ map: Map) {
         
