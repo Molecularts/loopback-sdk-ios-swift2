@@ -150,7 +150,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
         
     }
     
-    internal func processAnyRequest(request:Request, key: String? = nil) -> Future<AnyObject?, LoopBackError>{
+    public func processAnyRequest(request:Request, key: String? = nil) -> Future<AnyObject?, LoopBackError>{
         let promise = Promise<AnyObject?, LoopBackError>()
 
         request.responseJSON { (response : Response<AnyObject, NSError>) in
@@ -180,7 +180,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
 
     }
     
-    internal func processObjectRequest(request: Request, key: String? = nil) -> Future<Model?, LoopBackError>{
+    public func processObjectRequest(request: Request, key: String? = nil) -> Future<Model?, LoopBackError>{
         let promise = Promise<Model?, LoopBackError>()
         self.willProcessObjectRequest(request, promise: promise, key: key)
         
@@ -227,7 +227,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
         
     }
     
-    internal func processArrayRequest(request: Request) -> Future<[Model]?, LoopBackError>{
+    public func processArrayRequest(request: Request) -> Future<[Model]?, LoopBackError>{
         let promise = Promise<[Model]?, LoopBackError>()
         request.responseArray {  (response : Response<[Model], NSError>) in
             guard (response.result.isSuccess)
@@ -248,7 +248,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
         
     }
     
-    internal func prepareRequest(method:Method, pathComponents : [String]? = nil, absolutePath: String? = nil, parameters: [String : AnyObject]? = nil, encoding:ParameterEncoding? = .URL, headers: [String : String]? = nil) -> Request{
+    public func prepareRequest(method:Method, pathComponents : [String]? = nil, absolutePath: String? = nil, parameters: [String : AnyObject]? = nil, encoding:ParameterEncoding? = .URL, headers: [String : String]? = nil) -> Request{
         var path: String? = self.resourcePath(pathComponents)
         
         if absolutePath != nil{
