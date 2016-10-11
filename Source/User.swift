@@ -37,8 +37,14 @@ extension Repository where Model : UserModel{
                 else{
                     let jsonString = NSString(data: response.data!, encoding: NSASCIIStringEncoding)
                     var error: LoopBackError? = Mapper<LoopBackError>().map(jsonString!)
+                    if error == nil {
+                        error = LoopBackError(httpCode:HTTPStatusCode.ServiceUnavailable, message: "")
+                    }
+                    
                     error?.error = response.result.error
+
                     promise.failure(error!)
+
                     return
                     
             }
