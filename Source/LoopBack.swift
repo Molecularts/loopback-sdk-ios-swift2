@@ -127,8 +127,14 @@ public struct Filter : Mappable{
     }
     
     public func toRequestParametters() -> [String:AnyObject]{
-        let parametters: [String:AnyObject] = ["filter": self.toJSON()]
-        return parametters
+        if let filter:String? = self.toJSONString(){
+            let parametters: [String:AnyObject] = ["filter": filter!]
+            return parametters
+        }else {
+            assertionFailure("Filter parse error")
+            return [String:AnyObject]()
+        }
+
     }
     
 }
