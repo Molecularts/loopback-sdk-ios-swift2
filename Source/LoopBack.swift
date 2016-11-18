@@ -33,6 +33,15 @@ public protocol LoopBackClient{
 
 public extension LoopBackClient{
     
+    static var timeoutIntervalForResource:NSTimeInterval {
+        get {
+            return Alamofire.Manager.sharedInstance.session.configuration.timeoutIntervalForResource
+        }
+        set{
+             Alamofire.Manager.sharedInstance.session.configuration.timeoutIntervalForResource = newValue
+        }
+    }
+    
     var accessToken: ModelId? {
         get {
             let defaults = NSUserDefaults.standardUserDefaults()

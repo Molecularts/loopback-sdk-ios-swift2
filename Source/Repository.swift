@@ -57,7 +57,7 @@ public class Repository <Model where  Model:PersistedModel,  Model:Mappable>{
     public func findOne(filter : Filter?) -> Future<Model?, LoopBackError> {
         let parameters :[String: AnyObject]?  = filter?.toRequestParametters()
         
-        let request: Request = prepareRequest(.GET, pathComponents: ["findOne"], parameters: parameters, encoding:.URL)
+        let request: Request = prepareRequest(.GET, absolutePath: Model.modelName() + "/findOne", parameters: parameters, encoding:.URL)
         return self.processObjectRequest(request)
         
     }

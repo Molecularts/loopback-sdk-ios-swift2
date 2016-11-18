@@ -16,7 +16,7 @@ import ObjectMapper
 public protocol UserModel: PersistedModel{
     var realm: String? { get  set }
     var username: String? { get  set }
-    var password: String { get  set }
+    var password: String? { get  set }
     var email: String { get  set }
     var emailVerified: Bool { get  set }
     

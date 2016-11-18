@@ -17,22 +17,22 @@ public protocol AccessTokenModel : PersistedModel{
 }
 
 
-struct AccessToken: PersistedModel, ModelMappable{
-    var id: ModelId?
-    var userId: ModelId?
-    var ttl: Int?
-    var created: String?
+public class AccessToken: PersistedModel, ModelMappable{
+    public var id: ModelId?
+    public var userId: ModelId?
+    public var ttl: Int?
+    public var created: String?
     
     
-    internal static func modelName () -> String{
+    public static func modelName () -> String{
         return "AccessToken"
     }
     
-    internal init?(_ map: Map) {
+    public required init?(_ map: Map) {
         
     }
     
-    internal mutating func mapping(map: Map) {
+    public func mapping(map: Map) {
         id                  <- map["id"]
         userId              <- map["userId"]
         ttl                 <- map["ttl"]
@@ -40,7 +40,7 @@ struct AccessToken: PersistedModel, ModelMappable{
         
     }
     
-    static var current: AccessToken?{
+    public static var current: AccessToken?{
         get{
             let defaults = NSUserDefaults.standardUserDefaults()
             let userDict: NSDictionary? = defaults.objectForKey(LoopBackConstants.currentAccessTokenObjectKey) as? NSDictionary
